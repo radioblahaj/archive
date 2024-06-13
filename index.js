@@ -19,10 +19,12 @@ app.message("archive", async ({ message, say, client, body }) => {
         })
 
     const inChannel = (await checkChannel).channel.is_member; // returns true or false
+    const isArchived = (await checkChannel).channel.is_archived;
     await say(`${inChannel}`)
     try {
     switch (inChannel) {
         case true:
+            if (isArchived) {
             app.client.chat.postMessage({
                 channel: "C078K46G9NU",
                 text: "Archiving this channel! If you want to contest, dm @arav"
@@ -31,12 +33,14 @@ app.message("archive", async ({ message, say, client, body }) => {
                 token: process.env.SLACK_USER_TOKEN,
                 channel: "C078K46G9NU"
             })
-            
+        }   
         break;
     case false:
+        if (!isArchived) {
         app.client.conversations.join({
             channel: "C078K46G9NU"
-        })            
+       })
+    }    
     } 
 } catch(e) {
 await say("There's an error" + e)
